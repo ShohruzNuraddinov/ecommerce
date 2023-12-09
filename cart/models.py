@@ -18,9 +18,3 @@ class Cart(models.Model):
         if self.product.count < self.quantity:
             return False
         return True
-
-    def save(self, *args, **kwargs):
-        if not self.update_quantity:
-            return ValueError('value is not enough')
-
-        return super().save(*args, **kwargs)
