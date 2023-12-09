@@ -18,7 +18,7 @@ class Product(models.Model):
         return True
 
     def can_buy(self, quantity):
-        all_product = Product.objects.aggregate(total_quantity=models.Sum('count'))  # noqa
+        all_product = Product.objects.filter(product=self).aggregate(total_quantity=models.Sum('count'))  # noqa
         holded_produtcs = OrderProduct.objects.filter(product=self).filter(models.Q(
             order__status="INITIAL") | models.Q(order__status="PAYMENT")).aggregate(total_quantity=models.Sum('quantity'))  # noqa
         return all_product['total_quantity'] - holded_produtcs['total_quantity'] > quantity and self.active()
